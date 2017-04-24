@@ -486,7 +486,31 @@ function install_domoweb() {
 
 
 
+# install_domogik_package
+#
+# $1 : package id formatted as 'type_name'
+# $2 : package url
+#
+# Install a given domogik package from an url
+function install_domogik_package() {
+    # First, check if the package is not already installed : 
+    # We don't install or upgrade an already installed package release!
 
+    su - ${INSTALL_USER} -c "dmg_package " | grep "Package $1" 
+    if [[ $? -eq 0 ]] ; then
+        info "The package '$1' is already installed. Skipping the installation..."
+        return
+    fi
+
+    # Install the package
+    info "Installing the package '$1' from url '$2'..."
+    su - ${INSTALL_USER} -c "dmg_package --install '$2'"
+    if [[ $? -eq 0 ]] ; then
+        ok "... ok"
+    else
+        abort "Error while installing the package '$1' from url '$2'"
+    fi
+}
 
 
 
@@ -569,13 +593,18 @@ install_domogik
 ################################################################################
 # 8. install Domoweb
 
-#install_domoweb
+install_domoweb
 
 ################################################################################
 # 7. test the Domoweb installation
 # TODO
 
 
+################################################################################
+# 80. Install some default packages
+
+title "Install packages..."
+install_domogik_package plugin_weather "http://github.com/fritz-smh/domogik-plugin-weather/archive/master.zip"
 
 
 ################################################################################
@@ -586,7 +615,7 @@ title "Start Domogik (and Domogik MQ in the same time)..."
 /etc/init.d/domogik start
 
 title "Start Domoweb..."
-#/etc/init.d/domoweb start
+/etc/init.d/domoweb start
 
 
 ok "Installation finished with SUCCESS"
