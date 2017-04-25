@@ -82,9 +82,18 @@ MYSQL_PASSWORD=domogikpass
 #
 # Display a title
 function title() {
-    printf '[xxxxxxx] %*s\n' "$(( ${COLUMNS:-$(tput cols)} - 10 ))" '' | tr ' ' - | tr 'x' ' '
-    echo "[       ]        $*"
-    printf '[xxxxxxx] %*s\n' "$(( ${COLUMNS:-$(tput cols)} - 10 ))" '' | tr ' ' - | tr 'x' ' '
+    tput cols
+    if [[ $? -eq 0 ]] ; then
+        # tput cols works, we generate dynamically the width
+        printf '[xxxxxxx] %*s\n' "$(( ${COLUMNS:-$(tput cols)} - 10 ))" '' | tr ' ' - | tr 'x' ' '
+        echo "[       ]        $*"
+        printf '[xxxxxxx] %*s\n' "$(( ${COLUMNS:-$(tput cols)} - 10 ))" '' | tr ' ' - | tr 'x' ' '
+    else
+        # tput cols does not work (maybe this is run over ssh), we use 80 as width
+        printf '[xxxxxxx] %*s\n' "70" '' | tr ' ' - | tr 'x' ' '
+        echo "[       ]        $*"
+        printf '[xxxxxxx] %*s\n' "70" '' | tr ' ' - | tr 'x' ' '
+    fi
 }
 
 
