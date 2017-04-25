@@ -67,6 +67,7 @@ function abort() {
 # main
 ################################################################################
 
+MYSQL_ROOT_PASSWORD="rootpasswordtochange2017"
 OS="unknown"
 RELEASE=""
 if [[ -f /etc/debian_version ]] ; then
@@ -81,6 +82,7 @@ if [[ "x$OS" == "xdebian" ]] ; then
     
     apt-get update
     
+if [[ 1 -eq 0 ]] ; then ######## DEBUG
     
     ### LSB release
     #Domogik installation script uses the ``lsb_release -si`` command to check which Linux distribution you are using. Some Linux distribution has not this package instlled by default. This is the case for **Raspbian** for example.
@@ -124,7 +126,18 @@ if [[ "x$OS" == "xdebian" ]] ; then
     
     ### MySQL/MariaDB server
     
+    # in case, this is not already installed, we automatically set a root password during installation
+    export DEBIAN_FRONTEND=noninteractive
+    debconf-set-selections <<< "mariadb-server/root_password password $ROOT_PASSWORD"
+    debconf-set-selections <<< "mariadb-server/root_password_again password $ROOT_PASSWORD"
+
+fi ######## DEBUG
+
     apt-get -y install mariadb-server
+    # TODO : how to not prompt the user for a mysql admin password on install ?
+    # TODO : how to not prompt the user for a mysql admin password on install ?
+    # TODO : how to not prompt the user for a mysql admin password on install ?
+    # TODO : how to not prompt the user for a mysql admin password on install ?
     
 else 
     echo "Not a Debian"
