@@ -124,6 +124,9 @@ if [[ 1 -eq 0 ]] ; then ######## DEBUG
     #It will install the needed packages from the testing repository.
     
     
+fi ######## DEBUG
+
+
     ### MySQL/MariaDB server
     
     # in case, this is not already installed, we automatically set a root password during installation
@@ -131,7 +134,6 @@ if [[ 1 -eq 0 ]] ; then ######## DEBUG
     debconf-set-selections <<< "mariadb-server/root_password password $ROOT_PASSWORD"
     debconf-set-selections <<< "mariadb-server/root_password_again password $ROOT_PASSWORD"
 
-fi ######## DEBUG
 
     apt-get -y install mariadb-server
     # TODO : how to not prompt the user for a mysql admin password on install ?
