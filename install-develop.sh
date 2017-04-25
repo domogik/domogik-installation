@@ -82,7 +82,7 @@ MYSQL_PASSWORD=domogikpass
 #
 # Display a title
 function title() {
-    tput cols
+    tput cols > /dev/null 2>&1
     if [[ $? -eq 0 ]] ; then
         # tput cols works, we generate dynamically the width
         printf '[xxxxxxx] %*s\n' "$(( ${COLUMNS:-$(tput cols)} - 10 ))" '' | tr ' ' - | tr 'x' ' '
