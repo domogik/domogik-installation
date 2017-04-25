@@ -56,7 +56,7 @@ DOMOWEB_PACKAGE=https://github.com/domogik/domoweb/archive/${DOMOWEB_RELEASE}.ta
 # These variables should not be changed!
 
 INSTALL_USER=domogik
-INSTALL_GROUP=fritz
+INSTALL_GROUP=domogik
 INSTALL_FOLDER=/opt/dmgtest
 
 TMP_FOLDER=/tmp
@@ -340,13 +340,16 @@ function prepare_install_folder() {
         [[ $? -ne 0 ]] && abort "Error while creating the installation folder : '${INSTALL_FOLDER}'"
         ok "  ... ok"
         info "- applying grants on '${INSTALL_FOLDER}' to the user '${INSTALL_USER}:${INSTALL_GROUP}'"
-        chown ${INSTALL_USER}:${INSTALL_GROUP} ${INSTALL_FOLDER}
-        [[ $? -ne 0 ]] && abort "Error while settings grants to '${INSTALL_USER}:${INSTALL_GROUP}' to the installation folder : '${INSTALL_FOLDER}'"
-        ok "  ... ok"
-        [[ $? -ne 0 ]] && abort "Error while applying grants on '${INSTALL_FOLDER}' to the user '${INSTALL_USER}'"
+        # the command is after the if as done in all cases
     else
         ok "The installation folder '${INSTALL_FOLDER}' already exists"
+        info "Just in case, we will reset the folder '${INSTALL_FOLDER}' grants to the user '${INSTALL_USER}:${INSTALL_GROUP}'"
+        # the command is after the if as done in all cases
     fi
+    chown ${INSTALL_USER}:${INSTALL_GROUP} ${INSTALL_FOLDER}
+    [[ $? -ne 0 ]] && abort "Error while settings grants to '${INSTALL_USER}:${INSTALL_GROUP}' to the installation folder : '${INSTALL_FOLDER}'"
+    ok "  ... ok"
+    [[ $? -ne 0 ]] && abort "Error while applying grants on '${INSTALL_FOLDER}' to the user '${INSTALL_USER}'"
 
     ### test if the install user can create a file
     dummy_file=${INSTALL_FOLDER}/dummy
