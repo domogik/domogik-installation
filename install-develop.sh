@@ -371,6 +371,10 @@ function prepare_database() {
     # we do a 'create database if not exists' just in case the user would have been manually created, 
     # but not the database... in fact, this should not be needed
     info "Try to access the database server '${MYSQL_HOST}:${MYSQL_PORT}' with user='${MYSQL_LOGIN}' and password='****'..."
+    # first, check if the mysql client is installed
+    which mysql > /dev/null
+    [[ $? -ne 0 ]] && abort "The 'mysql' command is not found : please check that the MySQL client is installed on your server."  
+    # then, we can test the database connection
     mysql -u${MYSQL_LOGIN} -p${MYSQL_PASSWORD} -h${MYSQL_HOST} -P${MYSQL_PORT} <<EOF
         CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};
         exit
