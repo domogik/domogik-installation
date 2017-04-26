@@ -16,7 +16,7 @@
         # The mysql root password should be defined in the global install script.
         # We override it here only for local test purpose
         [[ -z "$MYSQL_ROOT_PASSWORD" ]] && MYSQL_ROOT_PASSWORD="rootpasswordtochange2017"
-        info "If the package mariadb-server is not installed, this password will be used during its installation as database root password : '${MYSQL_ROOT_PASSWORD}'"
+        info "If the package mariadb-server is not installed, this password will be used during its installation as the database root password : '${MYSQL_ROOT_PASSWORD}'"
 
 
         ### Update the packages list
@@ -71,8 +71,10 @@
         
         # in case, this is not already installed, we automatically set a root password during installation
         export DEBIAN_FRONTEND=noninteractive
-        debconf-set-selections <<< "mariadb-server/root_password password $MYSQL_ROOT_PASSWORD"
-        debconf-set-selections <<< "mariadb-server/root_password_again password $MYSQL_ROOT_PASSWORD"
+
+        echo "PASSWORD=$MYSQL_ROOT_PASSWORD"
+        #debconf-set-selections <<< "mariadb-server/root_password password $MYSQL_ROOT_PASSWORD"
+        #debconf-set-selections <<< "mariadb-server/root_password_again password $MYSQL_ROOT_PASSWORD"
     
     
         apt-get -y install mariadb-server

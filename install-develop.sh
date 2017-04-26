@@ -409,17 +409,19 @@ EOF
         info "- password = ${MYSQL_PASSWORD}"
 
         # first, we try to login with the generated mysql root password in case we installed ourself the server engine
+        info "Try to login in database as the 'root' database user with generated password '${MYSQL_ROOT_PASSWORD}'..."
         mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h${MYSQL_HOST} -P${MYSQL_PORT} <<EOF
             exit
 EOF
         if [[ $? -eq 0 ]] ; then
             # ok, we can use this password
             db_root_password=${MYSQL_ROOT_PASSWORD}
-            info "As we installed the database server automatically we known the database root password, so we autologin. Just in case you need it, the password is '${MYSQL_ROOT_PASSWORD}'."
+            ok "... ok : As we installed the database server automatically we known the database root password, so we autologin. Just in case you need it, the password is '${MYSQL_ROOT_PASSWORD}'."
         else
             # let's ask the user the password
             # TODO : or find a way to get the root password ?
-            info "To do this, we need you to login as the 'root' user of the database."
+            info "... not possible : it seems you already had the database server installed."
+            info "To create the domogik database, we need you to login as the 'root' user of the database."
             prompt "Database root password (hidden) : "
             read -s db_root_password
         fi
@@ -612,7 +614,7 @@ title "Install the dependencies"
         # The mysql root password should be defined in the global install script.
         # We override it here only for local test purpose
         [[ -z "$MYSQL_ROOT_PASSWORD" ]] && MYSQL_ROOT_PASSWORD="rootpasswordtochange2017"
-        info "If the package mariadb-server is not installed, this password will be used during its installation as database root password : '${MYSQL_ROOT_PASSWORD}'"
+        info "If the package mariadb-server is not installed, this password will be used during its installation as the database root password : '${MYSQL_ROOT_PASSWORD}'"
 
 
         ### Update the packages list
@@ -667,8 +669,10 @@ title "Install the dependencies"
         
         # in case, this is not already installed, we automatically set a root password during installation
         export DEBIAN_FRONTEND=noninteractive
-        debconf-set-selections <<< "mariadb-server/root_password password $MYSQL_ROOT_PASSWORD"
-        debconf-set-selections <<< "mariadb-server/root_password_again password $MYSQL_ROOT_PASSWORD"
+
+        echo "PASSWORD=$MYSQL_ROOT_PASSWORD"
+        #debconf-set-selections <<< "mariadb-server/root_password password $MYSQL_ROOT_PASSWORD"
+        #debconf-set-selections <<< "mariadb-server/root_password_again password $MYSQL_ROOT_PASSWORD"
     
     
         apt-get -y install mariadb-server
