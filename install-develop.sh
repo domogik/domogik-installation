@@ -407,8 +407,23 @@ EOF
         info "- database = ${MYSQL_DATABASE}"
         info "- login = ${MYSQL_LOGIN}"
         info "- password = ${MYSQL_PASSWORD}"
+        ask_db_root_password="yes"
 
-        # first, we try to login with the generated mysql root password in case we installed ourself the server engine
+        # first, we try to login with no mysql root password in case no password is configured...
+        info "Try to login in database as the 'root' database user with no password..."
+        mysql -uroot -h${MYSQL_HOST} -P${MYSQL_PORT} <<EOF
+            exit
+EOF
+        if [[ $? -eq 0 ]] ; then
+            # ok, we can use this password
+            db_root_password=""
+            ask_db_root_password="no"
+            ok "... ok : we can login as root user on database without password."
+        else
+            info "... not possible."
+        fi
+
+        # then, we try to login with the generated mysql root password in case we installed ourself the server engine
         info "Try to login in database as the 'root' database user with generated password '${MYSQL_ROOT_PASSWORD}'..."
         mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h${MYSQL_HOST} -P${MYSQL_PORT} <<EOF
             exit
@@ -416,8 +431,14 @@ EOF
         if [[ $? -eq 0 ]] ; then
             # ok, we can use this password
             db_root_password=${MYSQL_ROOT_PASSWORD}
+            ask_db_root_password="no"
             ok "... ok : As we installed the database server automatically we known the database root password, so we autologin. Just in case you need it, the password is '${MYSQL_ROOT_PASSWORD}'."
         else
+            info "... not possible."
+        fi
+
+        # if we are not able to login automatically, we ask the password
+        if [[ "x${ask_db_root_password}" == "xyes" ]] ; then
             # let's ask the user the password
             # TODO : or find a way to get the root password ?
             info "... not possible : it seems you already had the database server installed."
