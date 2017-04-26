@@ -642,8 +642,6 @@ title "Install the dependencies"
         ### Update the packages list
         apt-get update
         
-    if [[ 1 -eq 0 ]] ; then ######## DEBUG
-        
         ### LSB release
         #Domogik installation script uses the ``lsb_release -si`` command to check which Linux distribution you are using. Some Linux distribution has not this package instlled by default. This is the case for **Raspbian** for example.
         #
@@ -684,8 +682,6 @@ title "Install the dependencies"
         #It will install the needed packages from the testing repository.
         
         
-    fi ######## DEBUG
-    
     
         ### MySQL/MariaDB server
         
