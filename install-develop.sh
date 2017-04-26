@@ -47,33 +47,6 @@ DOMOGIK_MQ_PACKAGE=https://github.com/domogik/domogik-mq/archive/${DOMOGIK_MQ_RE
 DOMOWEB_PACKAGE=https://github.com/domogik/domoweb/archive/${DOMOWEB_RELEASE}.tar.gz
 
 
-
-
-################################################################################
-# Some global variables
-################################################################################
-
-# These variables should not be changed!
-
-INSTALL_USER=domogik
-INSTALL_GROUP=domogik
-INSTALL_FOLDER=/opt/dmgtest
-
-TMP_FOLDER=/tmp
-TMP_DOMOGIK_MQ_PACKAGE=domogik-mq-${DOMOGIK_MQ_RELEASE}.tar.gz
-TMP_DOMOGIK_PACKAGE=domogik-${DOMOGIK_RELEASE}.tar.gz
-TMP_DOMOWEB_PACKAGE=domoweb-${DOMOWEB_RELEASE}.tar.gz
-
-# default values for MySQL/MariaDB
-MYSQL_HOST=127.0.0.1
-MYSQL_PORT=3306
-MYSQL_DATABASE=domogiktest
-MYSQL_LOGIN=domogiktest
-MYSQL_PASSWORD=domogikpass
-
-
-
-
 ################################################################################
 # Functions - includes
 ################################################################################
@@ -234,6 +207,13 @@ function get_host_uuid() {
     python -c 'import sys,uuid; sys.stdout.write(str(uuid.getnode()))'
 }
 
+# generate_random_password
+#
+# Generate sort of a random password
+function generate_random_password() #
+    python -c 'import sys,uuid; sys.stdout.write(str(uuid.getnode()))'
+}
+
 ################################################################################
 # Functions - checks
 ################################################################################
@@ -267,6 +247,33 @@ function is_linux_kernel_compliant_or_abort() {
     [[ ${major} -lt 3 ]] && abort ${abort_msg}
     [[ ${major} -eq 3 ]] && [[ ${minor} -lt 9 ]] && abort ${abort_msg}
 }
+
+
+
+################################################################################
+# Some global variables
+################################################################################
+
+# These variables should not be changed!
+
+INSTALL_USER=domogik
+INSTALL_GROUP=domogik
+INSTALL_FOLDER=/opt/dmgtest
+
+TMP_FOLDER=/tmp
+TMP_DOMOGIK_MQ_PACKAGE=domogik-mq-${DOMOGIK_MQ_RELEASE}.tar.gz
+TMP_DOMOGIK_PACKAGE=domogik-${DOMOGIK_RELEASE}.tar.gz
+TMP_DOMOWEB_PACKAGE=domoweb-${DOMOWEB_RELEASE}.tar.gz
+
+# default values for MySQL/MariaDB
+MYSQL_ROOT_PASSWORD=$(generate_random_password) # this is needed only if no MySQL/MariaDB server is installed.
+MYSQL_HOST=127.0.0.1
+MYSQL_PORT=3306
+MYSQL_DATABASE=domogiktest
+MYSQL_LOGIN=domogiktest
+MYSQL_PASSWORD=domogikpass
+
+
 
 
 ################################################################################
@@ -574,95 +581,91 @@ if_initd_stop_all
 
 title "Install the dependencies"
 
-################################################################################
-#                                                                              #
-#                      Install dependencies for Debian 8.6                     #
-#                                                                              #
-################################################################################
+########################################
+#  Install dependencies for Debian 8.6 #
+########################################
 
+    # All the lines are prefixed by '   ' to get a final script more clear to read
 
-################################################################################
-# main
-################################################################################
-
-MYSQL_ROOT_PASSWORD="rootpasswordtochange2017"
-OS="unknown"
-RELEASE=""
-if [[ -f /etc/debian_version ]] ; then
-    OS=debian
-fi
-
-
-
-
-if [[ "x$OS" == "xdebian" ]] ; then
-    ### Update the packages list
+    ### Check if this is a Debian release
+    OS="unknown"
+    RELEASE=""
+    if [[ -f /etc/debian_version ]] ; then
+        OS=debian
+    fi
     
-    apt-get update
+    ### If Debian, process...
+    if [[ "x$OS" == "xdebian" ]] ; then
+        # The mysql root password should be defined in the global install script.
+        # We override it here only for local test purpose
+        [[ -z "$MYSQL_ROOT_PASSWORD" ]] && MYSQL_ROOT_PASSWORD="rootpasswordtochange2017"
+        ### Update the packages list
+        
+        apt-get update
+        
+    if [[ 1 -eq 0 ]] ; then ######## DEBUG
+        
+        ### LSB release
+        #Domogik installation script uses the ``lsb_release -si`` command to check which Linux distribution you are using. Some Linux distribution has not this package instlled by default. This is the case for **Raspbian** for example.
+        #
+        #On all Debian-based distributions (Raspbian for example), we install the **lsb-release** package
+        
+        apt-get -y install lsb-release
+        
+        ### Python 2.7 and related
+        apt-get -y install python2.7
+        apt-get -y install python2.7-dev python-pip
+        pip install netifaces
+        pip install sphinx-better-theme
+        
+        ### Specific about Debian stable (8.6)
+        # If you are using a Debian stable, you will need to install a more recent release of **alembic** related package. You will have to follow these steps.
+        #
+        #Create the file **/etc/apt/apt.conf.d/99defaultrelease**. It must contain : ::
+        #
+        #    APT::Default-Release "stable";
+        #
+        #Create the file **/etc/apt/sources.list.d/stable.list** : ::
+        #
+        #    deb     http://ftp.fr.debian.org/debian/    stable main contrib non-free
+        #    deb-src http://ftp.fr.debian.org/debian/    stable main contrib non-free
+        #    deb     http://security.debian.org/         stable/updates  main contrib non-free
+        #
+        #Create the file **/etc/apt/sources.list.d/testing.list** : ::
+        #
+        #    deb     http://ftp.fr.debian.org/debian/    testing main contrib non-free
+        #    deb-src http://ftp.fr.debian.org/debian/    testing main contrib non-free
+        #    deb     http://security.debian.org/         testing/updates  main contrib non-free
+        #
+        #Then run : ::
+        #
+        #    $ sudo apt-get update
+        #    $ sudo apt-get -t testing install python-sqlalchemy python-editor python-sqlalchemy python-alembic
+        #
+        #It will install the needed packages from the testing repository.
+        
+        
+    fi ######## DEBUG
     
-if [[ 1 -eq 0 ]] ; then ######## DEBUG
     
-    ### LSB release
-    #Domogik installation script uses the ``lsb_release -si`` command to check which Linux distribution you are using. Some Linux distribution has not this package instlled by default. This is the case for **Raspbian** for example.
-    #
-    #On all Debian-based distributions (Raspbian for example), we install the **lsb-release** package
-    
-    apt-get -y install lsb-release
-    
-    ### Python 2.7 and related
-    apt-get -y install python2.7
-    apt-get -y install python2.7-dev python-pip
-    pip install netifaces
-    pip install sphinx-better-theme
-    
-    ### Specific about Debian stable (8.6)
-    # If you are using a Debian stable, you will need to install a more recent release of **alembic** related package. You will have to follow these steps.
-    #
-    #Create the file **/etc/apt/apt.conf.d/99defaultrelease**. It must contain : ::
-    #
-    #    APT::Default-Release "stable";
-    #
-    #Create the file **/etc/apt/sources.list.d/stable.list** : ::
-    #
-    #    deb     http://ftp.fr.debian.org/debian/    stable main contrib non-free
-    #    deb-src http://ftp.fr.debian.org/debian/    stable main contrib non-free
-    #    deb     http://security.debian.org/         stable/updates  main contrib non-free
-    #
-    #Create the file **/etc/apt/sources.list.d/testing.list** : ::
-    #
-    #    deb     http://ftp.fr.debian.org/debian/    testing main contrib non-free
-    #    deb-src http://ftp.fr.debian.org/debian/    testing main contrib non-free
-    #    deb     http://security.debian.org/         testing/updates  main contrib non-free
-    #
-    #Then run : ::
-    #
-    #    $ sudo apt-get update
-    #    $ sudo apt-get -t testing install python-sqlalchemy python-editor python-sqlalchemy python-alembic
-    #
-    #It will install the needed packages from the testing repository.
+        ### MySQL/MariaDB server
+        
+        # in case, this is not already installed, we automatically set a root password during installation
+        export DEBIAN_FRONTEND=noninteractive
+        debconf-set-selections <<< "mariadb-server/root_password password $MYSQL_ROOT_PASSWORD"
+        debconf-set-selections <<< "mariadb-server/root_password_again password $MYSQL_ROOT_PASSWORD"
     
     
-fi ######## DEBUG
-
-
-    ### MySQL/MariaDB server
-    
-    # in case, this is not already installed, we automatically set a root password during installation
-    export DEBIAN_FRONTEND=noninteractive
-    debconf-set-selections <<< "mariadb-server/root_password password $ROOT_PASSWORD"
-    debconf-set-selections <<< "mariadb-server/root_password_again password $ROOT_PASSWORD"
-
-
-    apt-get -y install mariadb-server
-    # TODO : how to not prompt the user for a mysql admin password on install ?
-    # TODO : how to not prompt the user for a mysql admin password on install ?
-    # TODO : how to not prompt the user for a mysql admin password on install ?
-    # TODO : how to not prompt the user for a mysql admin password on install ?
-    
-else 
-    echo "Not a Debian"
-    exit 1
-fi
+        apt-get -y install mariadb-server
+        # TODO : how to not prompt the user for a mysql admin password on install ?
+        # TODO : how to not prompt the user for a mysql admin password on install ?
+        # TODO : how to not prompt the user for a mysql admin password on install ?
+        # TODO : how to not prompt the user for a mysql admin password on install ?
+        
+    else 
+        echo "Not a Debian"
+        exit 1
+    fi
 
 
 

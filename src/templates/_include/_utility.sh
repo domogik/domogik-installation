@@ -92,6 +92,13 @@ function get_host_uuid() {
     python -c 'import sys,uuid; sys.stdout.write(str(uuid.getnode()))'
 }
 
+# generate_random_password
+#
+# Generate sort of a random password
+function generate_random_password() #
+    python -c 'import sys,uuid; sys.stdout.write(str(uuid.getnode()))'
+}
+
 ################################################################################
 # Functions - checks
 ################################################################################

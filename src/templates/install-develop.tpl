@@ -47,6 +47,12 @@ DOMOGIK_MQ_PACKAGE=https://github.com/domogik/domogik-mq/archive/${DOMOGIK_MQ_RE
 DOMOWEB_PACKAGE=https://github.com/domogik/domoweb/archive/${DOMOWEB_RELEASE}.tar.gz
 
 
+################################################################################
+# Functions - includes
+################################################################################
+
+{% include './_include/_log.sh' %}
+{% include './_include/_utility.sh' %}
 
 
 ################################################################################
@@ -65,6 +71,7 @@ TMP_DOMOGIK_PACKAGE=domogik-${DOMOGIK_RELEASE}.tar.gz
 TMP_DOMOWEB_PACKAGE=domoweb-${DOMOWEB_RELEASE}.tar.gz
 
 # default values for MySQL/MariaDB
+MYSQL_ROOT_PASSWORD=$(generate_random_password) # this is needed only if no MySQL/MariaDB server is installed.
 MYSQL_HOST=127.0.0.1
 MYSQL_PORT=3306
 MYSQL_DATABASE=domogiktest
@@ -73,13 +80,6 @@ MYSQL_PASSWORD=domogikpass
 
 
 
-
-################################################################################
-# Functions - includes
-################################################################################
-
-{% include './_include/_log.sh' %}
-{% include './_include/_utility.sh' %}
 
 ################################################################################
 # Functions - installation
