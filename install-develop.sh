@@ -448,7 +448,8 @@ EOF
         fi
         
         info "Creating the database '${MYSQL_DATABASE}' and the user='${MYSQL_LOGIN}' with password='${MYSQL_PASSWORD}'..."
-        mysql -uroot -p${db_root_password} -h${MYSQL_HOST} -P${MYSQL_PORT} <<EOF
+        [ -z "${db_root_password}" ] && mysql_connection="-uroot" || mysql_connection="-uroot -p${db_root_password}"
+        mysql ${mysql_connection} -h${MYSQL_HOST} -P${MYSQL_PORT} <<EOF
             CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};
             GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* to ${MYSQL_LOGIN}@localhost IDENTIFIED BY '${MYSQL_PASSWORD}';
 EOF
