@@ -212,9 +212,22 @@ EOF
         info "- database = ${MYSQL_DATABASE}"
         info "- login = ${MYSQL_LOGIN}"
         info "- password = ${MYSQL_PASSWORD}"
-        info "To do this, we need you to login as the 'root' user of the database."
-        prompt "Database root password (hidden) : "
-        read -s db_root_password
+
+        # first, we try to login with the generated mysql root password in case we installed ourself the server engine
+        mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h${MYSQL_HOST} -P${MYSQL_PORT} <<EOF
+            exit
+EOF
+        if [[ $? -eq 0 ]] ; then
+            # ok, we can use this password
+            db_root_password=${MYSQL_ROOT_PASSWORD}
+            info "As we installed the database server automatically we known the database root password, so we autologin. Just in case you need it, the password is '${MYSQL_ROOT_PASSWORD}'."
+        else
+            # let's ask the user the password
+            # TODO : or find a way to get the root password ?
+            info "To do this, we need you to login as the 'root' user of the database."
+            prompt "Database root password (hidden) : "
+            read -s db_root_password
+        fi
         
         info "Creating the database '${MYSQL_DATABASE}' and the user='${MYSQL_LOGIN}' with password='${MYSQL_PASSWORD}'..."
         mysql -uroot -p${db_root_password} -h${MYSQL_HOST} -P${MYSQL_PORT} <<EOF
