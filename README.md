@@ -1,9 +1,8 @@
-=================
 Domogik installer
 =================
 
 Domogik
-=======
+-------
 
 Domogik is a free Open Source home automation solution.
 
@@ -13,7 +12,7 @@ Here you will find an installer which will help you to install Domogik in one co
 
 
 Installation
-============
+------------
 
 Be caution : **WORK IN PROGRESS**
 
