@@ -285,7 +285,6 @@ EOF
 function install_pip_dependencies() {
     component="$1"
     inst_folder="$2"
-    title "Install the pip dependencies for the ${component} package"
     pip install -r "$2/requirements.txt"
 }
 
@@ -300,10 +299,11 @@ function install_domogik_mq() {
     bck_folder=${INSTALL_FOLDER}/domogik-mq-$(date "+%Y%m%d.%H%M%S")/
     tgz_file=${TMP_FOLDER}/${TMP_DOMOGIK_MQ_PACKAGE}
 
-    install_pip_dependencies ${component} ${inst_folder}
-
     title "Extract the ${component} package"
     extract_package "${component}" "${inst_folder}" "${bck_folder}" "${tgz_file}"
+
+    title "Install the pip dependencies for the ${component} package"
+    install_pip_dependencies ${component} ${inst_folder}
 
     title "Install the ${component} package"
     cd ${inst_folder}
@@ -324,10 +324,11 @@ function install_domogik() {
     bck_folder=${INSTALL_FOLDER}/domogik-$(date "+%Y%m%d.%H%M%S")/
     tgz_file=${TMP_FOLDER}/${TMP_DOMOGIK_PACKAGE}
 
-    install_pip_dependencies ${component} ${inst_folder}
-
     title "Extract the ${component} package"
     extract_package "${component}" "${inst_folder}" "${bck_folder}" "${tgz_file}"
+
+    title "Install the pip dependencies for the ${component} package"
+    install_pip_dependencies ${component} ${inst_folder}
 
     title "Install the ${component} package"
     cd ${inst_folder}
@@ -361,10 +362,11 @@ function install_domoweb() {
     bck_folder=${INSTALL_FOLDER}/domoweb-$(date "+%Y%m%d.%H%M%S")/
     tgz_file=${TMP_FOLDER}/${TMP_DOMOWEB_PACKAGE}
 
-    install_pip_dependencies ${component} ${inst_folder}
-
     title "Extract the ${component} package"
     extract_package "${component}" "${inst_folder}" "${bck_folder}" "${tgz_file}"
+
+    title "Install the pip dependencies for the ${component} package"
+    install_pip_dependencies ${component} ${inst_folder}
 
     title "Install the ${component} package"
     cd ${inst_folder}
