@@ -41,6 +41,9 @@
 
         ### Zlib dev files
         apt-get install zlib1g-dev
+
+        ### Libffi-dev
+        apt-get install libffi-dev
         
         ### Specific about Debian stable (8.6)
         # If you are using a Debian stable, you will need to install a more recent release of **alembic** related package. You will have to follow these steps.
