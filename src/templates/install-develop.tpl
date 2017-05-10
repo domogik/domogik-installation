@@ -285,8 +285,8 @@ EOF
 function install_pip_dependencies() {
     component="$1"
     inst_folder="$2"
-    info "Running : 'pip install -r $2/requirements.txt' ..."
-    pip install -r "$2/requirements.txt"
+    info "Running : 'cd $2 && pip install -r requirements.txt' ..."
+    cd $2 && pip install -r requirements.txt
     [[ $? -ne 0 ]] && abort "Error while installing requirements with pip."
     ok "... ok"
 }
