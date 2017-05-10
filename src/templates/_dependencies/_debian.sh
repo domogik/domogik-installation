@@ -32,8 +32,15 @@
         ### Python 2.7 and related
         apt-get -y install python2.7
         apt-get -y install python2.7-dev python-pip
-        pip install netifaces
-        pip install sphinx-better-theme
+
+        # TODO : DEL
+        # TODO : DEL
+        # TODO : DEL
+        #pip install netifaces
+        #pip install sphinx-better-theme
+
+        ### Zlib dev files
+        apt-get install zlib1g-dev
         
         ### Specific about Debian stable (8.6)
         # If you are using a Debian stable, you will need to install a more recent release of **alembic** related package. You will have to follow these steps.
