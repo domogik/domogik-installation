@@ -686,15 +686,20 @@ title "Install the dependencies"
         #pip install sphinx-better-theme
 
         ### Remove python-cffi
-        # this is needed because the installed release is too old (8.6.1) and used by python instead of the one installed with pip
+        # python-cffi is installed with the previous command (apt-get -y install python2.7-dev python-pip)...
+        #
+        # This is needed because the installed release is too old (8.6.1) and used by python instead of the one installed with pip
         # which is needed to avoid some setuptools_ext import error.
-        apt-get remove python-cffi
+        apt-get -y remove python-cffi
+
+        ### OpenSSL dev files
+        apt-get -y install libssl-dev
 
         ### Zlib dev files
-        apt-get install zlib1g-dev
+        apt-get -y install zlib1g-dev
 
         ### Libffi-dev
-        apt-get install libffi-dev
+        apt-get -y install libffi-dev
         
         ### Specific about Debian stable (8.6)
         # If you are using a Debian stable, you will need to install a more recent release of **alembic** related package. You will have to follow these steps.

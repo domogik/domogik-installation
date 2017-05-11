@@ -46,11 +46,14 @@
         # which is needed to avoid some setuptools_ext import error.
         apt-get -y remove python-cffi
 
+        ### OpenSSL dev files
+        apt-get -y install libssl-dev
+
         ### Zlib dev files
-        apt-get install zlib1g-dev
+        apt-get -y install zlib1g-dev
 
         ### Libffi-dev
-        apt-get install libffi-dev
+        apt-get -y install libffi-dev
         
         ### Specific about Debian stable (8.6)
         # If you are using a Debian stable, you will need to install a more recent release of **alembic** related package. You will have to follow these steps.
