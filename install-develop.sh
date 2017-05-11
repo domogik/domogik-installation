@@ -685,6 +685,11 @@ title "Install the dependencies"
         #pip install netifaces
         #pip install sphinx-better-theme
 
+        ### Remove python-cffi
+        # this is needed because the installed release is too old (8.6.1) and used by python instead of the one installed with pip
+        # which is needed to avoid some setuptools_ext import error.
+        apt-get remove python-cffi
+
         ### Zlib dev files
         apt-get install zlib1g-dev
 
