@@ -52,9 +52,9 @@ VBoxManage modifyvm "${VMName}" --nic1 nat
 
 info "- configure the port forwarding..."
 VBoxManage modifyvm "${VMName}" --natpf1 "guestssh,tcp,,22222,,22"
-#VBoxManage modifyvm "${VMName}" --natpf1 "guestdmg1,tcp,,50506,,40406"
-#VBoxManage modifyvm "${VMName}" --natpf1 "guestdmg2,tcp,,50505,,40405"
-#VBoxManage modifyvm "${VMName}" --natpf1 "guestdmw,tcp,,50504,,40404"
+VBoxManage modifyvm "${VMName}" --natpf1 "guestdmg1,tcp,,40406,,40406"
+VBoxManage modifyvm "${VMName}" --natpf1 "guestdmg2,tcp,,40405,,40405"
+VBoxManage modifyvm "${VMName}" --natpf1 "guestdmw,tcp,,40404,,40404"
 
 # TODO : not needed ??? why ??
 info "- set a SATA controller..."
