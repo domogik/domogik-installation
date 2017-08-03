@@ -21,6 +21,6 @@ We are currently developping this installer : it will be available only with Dom
 Just do : 
 
 ```
-wget https://raw.githubusercontent.com/domogik/domogik-installation/master/install-develop.sh -O install-develop.sh ; chmod +x install-develop.sh ; ./install-develop.sh
+wget https://raw.githubusercontent.com/domogik/domogik-installation/master/install-develop.sh -O install-develop.sh ; chmod +x install-develop.sh ; sudo ./install-develop.sh
 ```
 
