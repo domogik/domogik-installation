@@ -44,6 +44,9 @@
         apt-get -y install libssl-dev
         apt-get -y install zlib1g-dev
         apt-get -y install libffi-dev
+
+        # Sound related dependencies
+        apt-get -y install sox libttspico-utils
         
         ### MySQL/MariaDB server
         
