@@ -480,8 +480,8 @@ EOF
 function install_pip_dependencies() {
     component="$1"
     inst_folder="$2"
-    info "Running : 'cd $2 && pip install -r requirements.txt' ..."
-    cd $2 && pip install -r requirements.txt
+    info "Running : 'cd $2 && pip install --upgrade -r requirements.txt' ..."
+    cd $2 && pip install --upgrade -r requirements.txt
     [[ $? -ne 0 ]] && abort "Error while installing requirements with pip."
     ok "... ok"
 }
@@ -649,6 +649,16 @@ title "Install the dependencies"
 ########################################
 # All the lines are prefixed by '   ' to get a final script more clear to read
 
+    function apt_get_install() {
+        info "Installing the package(s) : $*"
+        apt-get -y install $*
+    }
+
+    function apt_get_remove() {
+        info "Removing the package(s) : $*"
+        apt-get -y remove $*
+    }
+
     ### Check if this is a Debian release
     OS="unknown"
     RELEASE=""
@@ -673,23 +683,26 @@ title "Install the dependencies"
         #
         #On all Debian-based distributions (Raspbian for example), we install the **lsb-release** package
         
-        apt-get -y install lsb-release
+        apt_get_install lsb-release
         
         ### Python 2.7 and related
-        apt-get -y install python2.7
-        apt-get -y install python2.7-dev python-pip
+        apt_get_install python2.7
+        apt_get_install python2.7-dev python-pip
 
         # Remove python-cffi
         # python-cffi is installed with the previous command (apt-get -y install python2.7-dev python-pip)...
         #
         # This is needed because the installed release is too old (8.6.1) and used by python instead of the one installed with pip
         # which is needed to avoid some setuptools_ext import error.
-        apt-get -y remove python-cffi
+        apt_get_remove python-cffi
 
         # Various dependencies
-        apt-get -y install libssl-dev
-        apt-get -y install zlib1g-dev
-        apt-get -y install libffi-dev
+        apt_get_install libssl-dev
+        apt_get_install zlib1g-dev
+        apt_get_install libffi-dev
+
+        # Sound related dependencies
+        apt_get_install sox libttspico-utils
         
         ### MySQL/MariaDB server
         
@@ -711,7 +724,7 @@ title "Install the dependencies"
         # debconf: falling back to frontend: Teletype
         # dpkg-preconfigure: unable to re-open stdin: 
     
-        apt-get -y install mariadb-server
+        apt_get_install mariadb-server
         
     else 
         echo "Not a Debian"
