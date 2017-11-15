@@ -7,12 +7,14 @@
         echo "" # a blank to be clearer
         info "Installing the package(s) : $*"
         apt-get -y install $*
+        [[ $? -ne 0 ]] && abort "The installation of the package(s) '$*' failed."
     }
 
     function apt_get_remove() {
         echo "" # a blank to be clearer
         info "Removing the package(s) : $*"
         apt-get -y remove $*
+        [[ $? -ne 0 ]] && abort "The removal of the package(s) '$*' failed."
     }
 
     ### Check if this is a Debian release
