@@ -650,11 +650,13 @@ title "Install the dependencies"
 # All the lines are prefixed by '   ' to get a final script more clear to read
 
     function apt_get_install() {
+        echo "" # a blank to be clearer
         info "Installing the package(s) : $*"
         apt-get -y install $*
     }
 
     function apt_get_remove() {
+        echo "" # a blank to be clearer
         info "Removing the package(s) : $*"
         apt-get -y remove $*
     }
