@@ -123,7 +123,7 @@ function abort() {
 # This function returns some informations about when the final script is build.
 # This function code is updated by the build.sh script in src/
 function build_informations() {
-    echo "                  Build : 2017-11-28 15:54"  # BUILD_INFORMATIONS
+    echo "                  Build : 2017-11-28 16:05"  # BUILD_INFORMATIONS
 }
 
 # display some informations
@@ -775,6 +775,8 @@ title "Install the dependencies"
         # dpkg-preconfigure: unable to re-open stdin: 
     
         # Install only Maria DB is not already installed
+        dpkg_l mariadb-server-5.5
+        dpkg_l mariadb-server-5.6
         dpkg_l mariadb-server
         [[ $? -ne 0 ]] && apt_get_install mariadb-server
 

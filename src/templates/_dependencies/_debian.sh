@@ -100,6 +100,8 @@
         # dpkg-preconfigure: unable to re-open stdin: 
     
         # Install only Maria DB is not already installed
+        dpkg_l mariadb-server-5.5
+        dpkg_l mariadb-server-5.6
         dpkg_l mariadb-server
         [[ $? -ne 0 ]] && apt_get_install mariadb-server
 
