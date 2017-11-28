@@ -3,6 +3,41 @@
 ################################################################################
 
 
+# build informations
+#
+# This function returns some informations about when the final script is build.
+# This function code is updated by the build.sh script in src/
+function build_informations() {
+    echo "%% build_informations %%"  # BUILD_INFORMATIONS
+}
+
+# display some informations
+function display_informations() {
+    echo ""
+    # Ascii art generator : http://patorjk.com/software/taag/#p=display&f=Crazy&t=Domogik
+    echo "
+                 .-'''-.                        .-'''-.                                
+_______         '   _    \                     '   _    \                              
+\  ___ `'.    /   /` '.   \  __  __   ___    /   /` '.   \         .--.     .          
+ ' |--.\  \  .   |     \  ' |  |/  `.'   `. .   |     \  '  .--./) |__|   .'|          
+ | |    \  ' |   '      |  '|   .-.  .-.   '|   '      |  '/.''\\  .--. .'  |          
+ | |     |  '\    \     / / |  |  |  |  |  |\    \     / /| |  | | |  |<    |          
+ | |     |  | `.   ` ..' /  |  |  |  |  |  | `.   ` ..' /  \`-' /  |  | |   | ____     
+ | |     ' .'    '-...-'`   |  |  |  |  |  |    '-...-'`   /("'`   |  | |   | \ .'     
+ | |___.' /'                |  |  |  |  |  |               \ '---. |  | |   |/  .      
+/_______.'/                 |__|  |__|  |__|                /'""'.\|__| |    /\  \     
+\_______|/                                                 ||     ||    |   |  \  \    
+                                                           \'. __//     '    \  \  \   
+                                                            `'---'     '------'  '---'"
+    echo ""
+    echo "Welcome to the Domogik installation script!"
+    echo ""
+    echo "--- Build informations ---"
+    build_informations()
+    echo "--------------------------"
+    echo ""
+}
+
 # download
 #
 # $1 : url of a package to download

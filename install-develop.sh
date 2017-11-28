@@ -118,6 +118,41 @@ function abort() {
 ################################################################################
 
 
+# build informations
+#
+# This function returns some informations about when the final script is build.
+# This function code is updated by the build.sh script in src/
+function build_informations() {
+    echo "2017-11-28 13:48"  # BUILD_INFORMATIONS
+}
+
+# display some informations
+function display_informations() {
+    echo ""
+    # Ascii art generator : http://patorjk.com/software/taag/#p=display&f=Crazy&t=Domogik
+    echo "
+                 .-'''-.                        .-'''-.                                
+_______         '   _    \                     '   _    \                              
+\  ___ `'.    /   /` '.   \  __  __   ___    /   /` '.   \         .--.     .          
+ ' |--.\  \  .   |     \  ' |  |/  `.'   `. .   |     \  '  .--./) |__|   .'|          
+ | |    \  ' |   '      |  '|   .-.  .-.   '|   '      |  '/.''\\  .--. .'  |          
+ | |     |  '\    \     / / |  |  |  |  |  |\    \     / /| |  | | |  |<    |          
+ | |     |  | `.   ` ..' /  |  |  |  |  |  | `.   ` ..' /  \`-' /  |  | |   | ____     
+ | |     ' .'    '-...-'`   |  |  |  |  |  |    '-...-'`   /("'`   |  | |   | \ .'     
+ | |___.' /'                |  |  |  |  |  |               \ '---. |  | |   |/  .      
+/_______.'/                 |__|  |__|  |__|                /'""'.\|__| |    /\  \     
+\_______|/                                                 ||     ||    |   |  \  \    
+                                                           \'. __//     '    \  \  \   
+                                                            `'---'     '------'  '---'"
+    echo ""
+    echo "Welcome to the Domogik installation script!"
+    echo ""
+    echo "--- Build informations ---"
+    build_informations()
+    echo "--------------------------"
+    echo ""
+}
+
 # download
 #
 # $1 : url of a package to download
@@ -616,8 +651,10 @@ function install_domogik_package() {
 ################################################################################
 # 0. do some checks (distribution version, python version, root, free space, ...)
 # TODO
-# TODO : for gunicorn, check kernel >= 3.9
 # TODO :get arch, dsitribution
+
+title "Informations"
+display_informations
 
 title "Check the prerequisites"
 
