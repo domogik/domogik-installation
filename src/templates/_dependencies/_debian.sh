@@ -3,18 +3,35 @@
 ########################################
 # All the lines are prefixed by '   ' to get a final script more clear to read
 
+    # is a package installed ?
+    function dpkg_l() {
+        info "Check if the package '$1' is installed..."
+        dpkg -l $1
+        if [[ $? -eq 0 ]] ; then
+            ok "Package '$1' is already installed."
+            return 0
+        else
+            info "Package '$1' is NOT installed."
+            return 1
+        fi
+    }
+
+    # install a package
     function apt_get_install() {
         echo "" # a blank to be clearer
         info "Installing the package(s) : $*"
         apt-get -y install $*
         [[ $? -ne 0 ]] && abort "The installation of the package(s) '$*' failed."
+        ok "Package(s) '$*' installed."
     }
 
+    # remove a package
     function apt_get_remove() {
         echo "" # a blank to be clearer
         info "Removing the package(s) : $*"
         apt-get -y remove $*
         [[ $? -ne 0 ]] && abort "The removal of the package(s) '$*' failed."
+        ok "Package(s) '$*' removed."
     }
 
     ### Check if this is a Debian release
@@ -82,7 +99,11 @@
         # debconf: falling back to frontend: Teletype
         # dpkg-preconfigure: unable to re-open stdin: 
     
-        apt_get_install mariadb-server
+        # Install only Maria DB is not already installed
+        dpkg_l mariadb-server
+        [[ $? -ne 0 ]] && apt_get_install mariadb-server
+
+        # TODO : check the mariadb release also ?
         
     else 
         echo "Not a Debian"
