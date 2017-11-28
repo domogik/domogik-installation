@@ -8,33 +8,25 @@
 # This function returns some informations about when the final script is build.
 # This function code is updated by the build.sh script in src/
 function build_informations() {
-    echo "%% build_informations %%"  # BUILD_INFORMATIONS
+    echo "                  Build : %% build_informations %%"  # BUILD_INFORMATIONS
 }
 
 # display some informations
 function display_informations() {
     echo ""
     # Ascii art generator : http://patorjk.com/software/taag/#p=display&f=Crazy&t=Domogik
-    echo "
-                 .-'''-.                        .-'''-.                                
-_______         '   _    \                     '   _    \                              
-\  ___ `'.    /   /` '.   \  __  __   ___    /   /` '.   \         .--.     .          
- ' |--.\  \  .   |     \  ' |  |/  `.'   `. .   |     \  '  .--./) |__|   .'|          
- | |    \  ' |   '      |  '|   .-.  .-.   '|   '      |  '/.''\\  .--. .'  |          
- | |     |  '\    \     / / |  |  |  |  |  |\    \     / /| |  | | |  |<    |          
- | |     |  | `.   ` ..' /  |  |  |  |  |  | `.   ` ..' /  \`-' /  |  | |   | ____     
- | |     ' .'    '-...-'`   |  |  |  |  |  |    '-...-'`   /("'`   |  | |   | \ .'     
- | |___.' /'                |  |  |  |  |  |               \ '---. |  | |   |/  .      
-/_______.'/                 |__|  |__|  |__|                /'""'.\|__| |    /\  \     
-\_______|/                                                 ||     ||    |   |  \  \    
-                                                           \'. __//     '    \  \  \   
-                                                            `'---'     '------'  '---'"
+    echo "                  ______                            _ _    ";
+    echo "                  |  _  \                          (_) |   ";
+    echo "                  | | | |___  _ __ ___   ___   __ _ _| | __";
+    echo "                  | | | / _ \| '_ \` _ \ / _ \ / _\` | | |/ /";
+    echo "                  | |/ / (_) | | | | | | (_) | (_| | |   < ";
+    echo "                  |___/ \___/|_| |_| |_|\___/ \__, |_|_|\_\  ";
+    echo "                                               __/ |       ";
+    echo "                                              |___/        ";
+
     echo ""
-    echo "Welcome to the Domogik installation script!"
     echo ""
-    echo "--- Build informations ---"
-    build_informations()
-    echo "--------------------------"
+    build_informations
     echo ""
 }
 
