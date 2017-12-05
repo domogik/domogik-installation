@@ -612,6 +612,13 @@ function install_domogik_package() {
 # MAIN                                   
 ################################################################################
 
+# check if we need to enable a virtualenv
+if [[ $# -eq 2 && "$1" == "--venv" ]] ; then
+    title "Enabling virtual env"
+    info "source $2/bin/activate"
+    source $2/bin/activate
+fi
+
 
 ################################################################################
 # 0. do some checks (distribution version, python version, root, free space, ...)
