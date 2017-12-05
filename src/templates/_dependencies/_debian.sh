@@ -3,6 +3,37 @@
 ########################################
 # All the lines are prefixed by '   ' to get a final script more clear to read
 
+    # is a package installed ?
+    function dpkg_l() {
+        info "Check if the package '$1' is installed..."
+        dpkg -l $1
+        if [[ $? -eq 0 ]] ; then
+            ok "Package '$1' is already installed."
+            return 0
+        else
+            info "Package '$1' is NOT installed."
+            return 1
+        fi
+    }
+
+    # install a package
+    function apt_get_install() {
+        echo "" # a blank to be clearer
+        info "Installing the package(s) : $*"
+        apt-get -y install $*
+        [[ $? -ne 0 ]] && abort "The installation of the package(s) '$*' failed."
+        ok "Package(s) '$*' installed."
+    }
+
+    # remove a package
+    function apt_get_remove() {
+        echo "" # a blank to be clearer
+        info "Removing the package(s) : $*"
+        apt-get -y remove $*
+        [[ $? -ne 0 ]] && abort "The removal of the package(s) '$*' failed."
+        ok "Package(s) '$*' removed."
+    }
+
     ### Check if this is a Debian release
     OS="unknown"
     RELEASE=""
@@ -27,26 +58,26 @@
         #
         #On all Debian-based distributions (Raspbian for example), we install the **lsb-release** package
         
-        apt-get -y install lsb-release
+        apt_get_install lsb-release
         
         ### Python 2.7 and related
-        apt-get -y install python2.7
-        apt-get -y install python2.7-dev python-pip
+        apt_get_install python2.7
+        apt_get_install python2.7-dev python-pip
 
         # Remove python-cffi
         # python-cffi is installed with the previous command (apt-get -y install python2.7-dev python-pip)...
         #
         # This is needed because the installed release is too old (8.6.1) and used by python instead of the one installed with pip
         # which is needed to avoid some setuptools_ext import error.
-        apt-get -y remove python-cffi
+        apt_get_remove python-cffi
 
         # Various dependencies
-        apt-get -y install libssl-dev
-        apt-get -y install zlib1g-dev
-        apt-get -y install libffi-dev
+        apt_get_install libssl-dev
+        apt_get_install zlib1g-dev
+        apt_get_install libffi-dev
 
         # Sound related dependencies
-        apt-get -y install sox libttspico-utils
+        apt_get_install sox libttspico-utils
         
         ### MySQL/MariaDB server
         
@@ -68,7 +99,13 @@
         # debconf: falling back to frontend: Teletype
         # dpkg-preconfigure: unable to re-open stdin: 
     
-        apt-get -y install mariadb-server
+        # Install only Maria DB is not already installed
+        dpkg_l mariadb-server-5.5
+        dpkg_l mariadb-server-5.6
+        dpkg_l mariadb-server
+        [[ $? -ne 0 ]] && apt_get_install mariadb-server
+
+        # TODO : check the mariadb release also ?
         
     else 
         echo "Not a Debian"

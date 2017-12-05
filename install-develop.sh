@@ -118,6 +118,33 @@ function abort() {
 ################################################################################
 
 
+# build informations
+#
+# This function returns some informations about when the final script is build.
+# This function code is updated by the build.sh script in src/
+function build_informations() {
+    echo "                  Build : 2017-11-28 16:05"  # BUILD_INFORMATIONS
+}
+
+# display some informations
+function display_informations() {
+    echo ""
+    # Ascii art generator : http://patorjk.com/software/taag/#p=display&f=Crazy&t=Domogik
+    echo "                  ______                            _ _    ";
+    echo "                  |  _  \                          (_) |   ";
+    echo "                  | | | |___  _ __ ___   ___   __ _ _| | __";
+    echo "                  | | | / _ \| '_ \` _ \ / _ \ / _\` | | |/ /";
+    echo "                  | |/ / (_) | | | | | | (_) | (_| | |   < ";
+    echo "                  |___/ \___/|_| |_| |_|\___/ \__, |_|_|\_\  ";
+    echo "                                               __/ |       ";
+    echo "                                              |___/        ";
+
+    echo ""
+    echo ""
+    build_informations
+    echo ""
+}
+
 # download
 #
 # $1 : url of a package to download
@@ -480,8 +507,8 @@ EOF
 function install_pip_dependencies() {
     component="$1"
     inst_folder="$2"
-    info "Running : 'cd $2 && pip install -r requirements.txt' ..."
-    cd $2 && pip install -r requirements.txt
+    info "Running : 'cd $2 && pip install --upgrade -r requirements.txt' ..."
+    cd $2 && pip install --upgrade -r requirements.txt
     [[ $? -ne 0 ]] && abort "Error while installing requirements with pip."
     ok "... ok"
 }
@@ -623,8 +650,10 @@ fi
 ################################################################################
 # 0. do some checks (distribution version, python version, root, free space, ...)
 # TODO
-# TODO : for gunicorn, check kernel >= 3.9
 # TODO :get arch, dsitribution
+
+title "Informations"
+display_informations
 
 title "Check the prerequisites"
 
@@ -656,6 +685,37 @@ title "Install the dependencies"
 ########################################
 # All the lines are prefixed by '   ' to get a final script more clear to read
 
+    # is a package installed ?
+    function dpkg_l() {
+        info "Check if the package '$1' is installed..."
+        dpkg -l $1
+        if [[ $? -eq 0 ]] ; then
+            ok "Package '$1' is already installed."
+            return 0
+        else
+            info "Package '$1' is NOT installed."
+            return 1
+        fi
+    }
+
+    # install a package
+    function apt_get_install() {
+        echo "" # a blank to be clearer
+        info "Installing the package(s) : $*"
+        apt-get -y install $*
+        [[ $? -ne 0 ]] && abort "The installation of the package(s) '$*' failed."
+        ok "Package(s) '$*' installed."
+    }
+
+    # remove a package
+    function apt_get_remove() {
+        echo "" # a blank to be clearer
+        info "Removing the package(s) : $*"
+        apt-get -y remove $*
+        [[ $? -ne 0 ]] && abort "The removal of the package(s) '$*' failed."
+        ok "Package(s) '$*' removed."
+    }
+
     ### Check if this is a Debian release
     OS="unknown"
     RELEASE=""
@@ -680,23 +740,26 @@ title "Install the dependencies"
         #
         #On all Debian-based distributions (Raspbian for example), we install the **lsb-release** package
         
-        apt-get -y install lsb-release
+        apt_get_install lsb-release
         
         ### Python 2.7 and related
-        apt-get -y install python2.7
-        apt-get -y install python2.7-dev python-pip
+        apt_get_install python2.7
+        apt_get_install python2.7-dev python-pip
 
         # Remove python-cffi
         # python-cffi is installed with the previous command (apt-get -y install python2.7-dev python-pip)...
         #
         # This is needed because the installed release is too old (8.6.1) and used by python instead of the one installed with pip
         # which is needed to avoid some setuptools_ext import error.
-        apt-get -y remove python-cffi
+        apt_get_remove python-cffi
 
         # Various dependencies
-        apt-get -y install libssl-dev
-        apt-get -y install zlib1g-dev
-        apt-get -y install libffi-dev
+        apt_get_install libssl-dev
+        apt_get_install zlib1g-dev
+        apt_get_install libffi-dev
+
+        # Sound related dependencies
+        apt_get_install sox libttspico-utils
         
         ### MySQL/MariaDB server
         
@@ -718,7 +781,13 @@ title "Install the dependencies"
         # debconf: falling back to frontend: Teletype
         # dpkg-preconfigure: unable to re-open stdin: 
     
-        apt-get -y install mariadb-server
+        # Install only Maria DB is not already installed
+        dpkg_l mariadb-server-5.5
+        dpkg_l mariadb-server-5.6
+        dpkg_l mariadb-server
+        [[ $? -ne 0 ]] && apt_get_install mariadb-server
+
+        # TODO : check the mariadb release also ?
         
     else 
         echo "Not a Debian"

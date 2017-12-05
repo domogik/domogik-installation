@@ -421,8 +421,10 @@ function install_domogik_package() {
 ################################################################################
 # 0. do some checks (distribution version, python version, root, free space, ...)
 # TODO
-# TODO : for gunicorn, check kernel >= 3.9
 # TODO :get arch, dsitribution
+
+title "Informations"
+display_informations
 
 title "Check the prerequisites"
 
