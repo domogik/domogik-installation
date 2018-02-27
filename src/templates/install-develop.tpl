@@ -32,7 +32,7 @@
 ################################################################################
 
 DOMOGIK_RELEASE=develop
-DOMOGIK_MQ_RELEASE=1.4
+DOMOGIK_MQ_RELEASE=develop
 DOMOWEB_RELEASE=develop
 
 

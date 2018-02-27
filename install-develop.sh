@@ -32,7 +32,7 @@
 ################################################################################
 
 DOMOGIK_RELEASE=develop
-DOMOGIK_MQ_RELEASE=1.4
+DOMOGIK_MQ_RELEASE=develop
 DOMOWEB_RELEASE=develop
 
 
@@ -123,7 +123,7 @@ function abort() {
 # This function returns some informations about when the final script is build.
 # This function code is updated by the build.sh script in src/
 function build_informations() {
-    echo "                  Build : 2017-11-28 16:05"  # BUILD_INFORMATIONS
+    echo "                  Build : 2018-02-27 17:03"  # BUILD_INFORMATIONS
 }
 
 # display some informations
