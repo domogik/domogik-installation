@@ -37,12 +37,12 @@ function display_informations() {
 function test_pip() {
     pip_test_cmd="pip search simplejson"
     info "Testing silently the 'pip' tool with the comment '${pip_test_cmd}'..."
-    $pip_test > /dev/null 2>&1
+    $pip_test_cmd > /dev/null 2>&1
     if [ $? -eq 0 ] ; then
         ok "Pip is working correctly"
     else
         error "Pip seems not to work. Executing again the command to display you the output for analysis :"
-        $pip_test 
+        $pip_test_cmd 
         abort "."
     fi
 }
