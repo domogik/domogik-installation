@@ -123,7 +123,7 @@ function abort() {
 # This function returns some informations about when the final script is build.
 # This function code is updated by the build.sh script in src/
 function build_informations() {
-    echo "                  Build : 2018-02-27 17:03"  # BUILD_INFORMATIONS
+    echo "                  Build : 2018-02-27 17:26"  # BUILD_INFORMATIONS
 }
 
 # display some informations
@@ -143,6 +143,23 @@ function display_informations() {
     echo ""
     build_informations
     echo ""
+}
+
+# test_pip
+#
+# Test pip by doing a pip search command
+# This is done because we encountered some pip issues with some users
+function test_pip() {
+    pip_test_cmd="pip search simplejson"
+    info "Testing silently the 'pip' tool with the comment '${pip_test_cmd}'..."
+    $pip_test > /dev/null 2>&1
+    if [ $? -eq 0 ] ; then
+        ok "Pip is working correctly"
+    else
+        error "Pip seems not to work. Executing again the command to display you the output for analysis :"
+        $pip_test 
+        abort "."
+    fi
 }
 
 # download
@@ -638,13 +655,6 @@ function install_domogik_package() {
 ################################################################################
 # MAIN                                   
 ################################################################################
-
-# check if we need to enable a virtualenv
-if [[ $# -eq 2 && "$1" == "--venv" ]] ; then
-    title "Enabling virtual env"
-    info "source $2/bin/activate"
-    source $2/bin/activate
-fi
 
 
 ################################################################################

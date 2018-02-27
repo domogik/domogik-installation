@@ -30,6 +30,23 @@ function display_informations() {
     echo ""
 }
 
+# test_pip
+#
+# Test pip by doing a pip search command
+# This is done because we encountered some pip issues with some users
+function test_pip() {
+    pip_test_cmd="pip search simplejson"
+    info "Testing silently the 'pip' tool with the comment '${pip_test_cmd}'..."
+    $pip_test > /dev/null 2>&1
+    if [ $? -eq 0 ] ; then
+        ok "Pip is working correctly"
+    else
+        error "Pip seems not to work. Executing again the command to display you the output for analysis :"
+        $pip_test 
+        abort "."
+    fi
+}
+
 # download
 #
 # $1 : url of a package to download
