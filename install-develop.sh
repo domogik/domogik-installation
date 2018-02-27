@@ -123,7 +123,7 @@ function abort() {
 # This function returns some informations about when the final script is build.
 # This function code is updated by the build.sh script in src/
 function build_informations() {
-    echo "                  Build : 2018-02-27 17:37"  # BUILD_INFORMATIONS
+    echo "                  Build : 2018-02-27 22:12"  # BUILD_INFORMATIONS
 }
 
 # display some informations
@@ -158,7 +158,7 @@ function test_pip() {
     else
         error "Pip seems not to work. Executing again the command to display you the output for analysis :"
         $pip_test_cmd 
-        abort "."
+        abort "Please check your configuration. This is not a Domogik issue, this is a Pip isssue."
     fi
 }
 

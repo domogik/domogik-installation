@@ -43,7 +43,7 @@ function test_pip() {
     else
         error "Pip seems not to work. Executing again the command to display you the output for analysis :"
         $pip_test_cmd 
-        abort "."
+        abort "Please check your configuration. This is not a Domogik issue, this is a Pip isssue."
     fi
 }
 
