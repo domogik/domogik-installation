@@ -453,7 +453,8 @@ title "Install the dependencies"
 
 {% include './_dependencies/_debian.sh' %}
 
-
+# Check if pip works
+test_pip
 
 
 

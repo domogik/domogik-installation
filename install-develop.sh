@@ -123,7 +123,7 @@ function abort() {
 # This function returns some informations about when the final script is build.
 # This function code is updated by the build.sh script in src/
 function build_informations() {
-    echo "                  Build : 2018-02-27 17:26"  # BUILD_INFORMATIONS
+    echo "                  Build : 2018-02-27 17:30"  # BUILD_INFORMATIONS
 }
 
 # display some informations
@@ -803,7 +803,8 @@ title "Install the dependencies"
         echo "Not a Debian"
     fi
 
-
+# Check if pip works
+test_pip
 
 
 
