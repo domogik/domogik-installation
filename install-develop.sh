@@ -123,7 +123,7 @@ function abort() {
 # This function returns some informations about when the final script is build.
 # This function code is updated by the build.sh script in src/
 function build_informations() {
-    echo "                  Build : 2018-02-27 22:12"  # BUILD_INFORMATIONS
+    echo "                  Build : 2018-03-01 16:23"  # BUILD_INFORMATIONS
 }
 
 # display some informations
@@ -311,7 +311,7 @@ TMP_DOMOWEB_PACKAGE=domoweb-${DOMOWEB_RELEASE}.tar.gz
 
 # default values for MySQL/MariaDB
 MYSQL_ROOT_PASSWORD=$(generate_random_password) # this is needed only if no MySQL/MariaDB server is installed.
-MYSQL_HOST=127.0.0.1
+MYSQL_HOST=localhost
 MYSQL_PORT=3306
 MYSQL_DATABASE=domogiktest
 MYSQL_LOGIN=domogiktest
