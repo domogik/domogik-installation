@@ -72,7 +72,7 @@ TMP_DOMOWEB_PACKAGE=domoweb-${DOMOWEB_RELEASE}.tar.gz
 
 # default values for MySQL/MariaDB
 MYSQL_ROOT_PASSWORD=$(generate_random_password) # this is needed only if no MySQL/MariaDB server is installed.
-MYSQL_HOST=127.0.0.1
+MYSQL_HOST=localhost
 MYSQL_PORT=3306
 MYSQL_DATABASE=domogiktest
 MYSQL_LOGIN=domogiktest
